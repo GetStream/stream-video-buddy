@@ -1,0 +1,29 @@
+{
+  "name": "stream-video-buddy",
+  "version": "1.0.0",
+  "description": "Client to test StreamVideoSDK",
+  "main": "./lib/index.js",
+  "dependencies": {
+    "commander": "^9.5.0",
+    "playwright": "^1.29.2",
+    "stream-video-buddy": "github:GetStream/stream-video-buddy"
+  },
+  "private": true,
+  "bin": {
+    "stream-video-buddy": "./lib/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GetStream/stream-video-buddy"
+  },
+  "keywords": [],
+  "author": "Stream.io Inc.",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/GetStream/stream-video-buddy/issues"
+  },
+  "homepage": "https://github.com/GetStream/stream-video-buddy"
+}
