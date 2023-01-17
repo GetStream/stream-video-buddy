@@ -1,0 +1,44 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  chat:
+    name: Automated Code Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.number }}
+      STREAM_SDK_TEST_ACCOUNT_PASSWORD: ${{ secrets.STREAM_SDK_TEST_ACCOUNT_PASSWORD }}
+      STREAM_SDK_TEST_ACCOUNT_EMAIL: ${{ secrets.STREAM_SDK_TEST_ACCOUNT_EMAIL }}
+      STREAM_SDK_TEST_APP: ${{ secrets.STREAM_SDK_TEST_APP }}
+    steps:
+      - name: Install Bot SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.BOT_SSH_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v3.3.0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19.4.0
+          cache: 'npm'
+
+      - run: npm install
+
+      - name: Eslint
+        run: npx eslint lib/**
+
+      - name: Test CLI
+        run: |
+          npm install -g https://github.com/GetStream/stream-video-buddy
+          stream-video-buddy join --call-id "testme321" --users-count 2 --wait 1
