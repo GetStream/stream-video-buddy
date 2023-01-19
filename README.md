@@ -1,4 +1,6 @@
-# Stream Video Buddy
+# Description
+
+*stream-video-buddy* is a tool for testing video calls in the Stream SDKs. It acts as a participant in a video call and performs a series of actions to emulate a real user.
 
 ## Requirements
 
@@ -11,12 +13,12 @@ export STREAM_SDK_TEST_ACCOUNT_EMAIL="..." # See 1password
 ## Installation
 
 ```bash
-npm i -g https://github.com/GetStream/stream-video-buddy
+npm install -g https://github.com/GetStream/stream-video-buddy
 ```
 
 ## Usage
 
-`stream-video-buddy` can be executed in two ways
+*stream-video-buddy* can be executed in two ways
 
 1. Directly:
 

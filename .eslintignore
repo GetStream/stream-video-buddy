@@ -1,0 +1,14 @@
+node_modules
+build
+/.cache/
+scripts/
+/dist/
+/bin/
+/include/
+/build/
+dist
+*dist*
+/vendor/
+*.md
+/coverage
+docusaurus/

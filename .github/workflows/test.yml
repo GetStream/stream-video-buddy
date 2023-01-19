@@ -35,10 +35,17 @@ jobs:
 
       - run: npm install
 
+      - name: Prettier
+        run: npm run prettier
+
       - name: Eslint
-        run: npx eslint lib/**
+        run: npm run eslint
+
+      - name: Jest
+        run: npm run test
 
       - name: Test CLI
         run: |
           npm install -g https://github.com/GetStream/stream-video-buddy
+          stream-video-buddy server &
           stream-video-buddy join --call-id "testme321" --users-count 2 --wait 1
