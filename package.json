@@ -14,7 +14,7 @@
   },
   "scripts": {
     "eslint": "eslint --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
-    "test": "jest --collectCoverage",
+    "test": "jest --collectCoverage --detectOpenHandles",
     "prettier": "prettier --check '**/*.{js,ts}'"
   },
   "repository": {

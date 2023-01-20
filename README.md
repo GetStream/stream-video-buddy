@@ -23,7 +23,7 @@ npm install -g https://github.com/GetStream/stream-video-buddy
 1. Directly:
 
     ```bash
-    stream-video-buddy join --call-id test321 --users-count 5 --wait 10
+    stream-video-buddy join --call-id test321 --users-count 5
     ```
 
 2. Remotely:
@@ -40,5 +40,5 @@ npm install -g https://github.com/GetStream/stream-video-buddy
         curl "http://localhost:4567/stream-video-buddy" \
           -X POST \
           -H "Content-Type: application/json" \
-          -d '{"call-id": "test321", "users-count": 5, "wait": 10}'
+          -d '{"call-id": "test321", "users-count": 5, "duration": 10}'
         ```

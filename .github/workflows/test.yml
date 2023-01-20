@@ -33,6 +33,8 @@ jobs:
           node-version: 19.4.0
           cache: 'npm'
 
+      - run: sudo apt-get install -y xvfb x11-apps x11-xkb-utils libx11-6 libx11-xcb1 # required for GUI tests
+
       - run: npm install
 
       - name: Prettier
@@ -42,10 +44,4 @@ jobs:
         run: npm run eslint
 
       - name: Jest
-        run: npm run test
-
-      - name: Test CLI
-        run: |
-          npm install -g https://github.com/GetStream/stream-video-buddy
-          stream-video-buddy server &
-          stream-video-buddy join --call-id "testme321" --users-count 2 --wait 1
+        run: xvfb-run npm run test
