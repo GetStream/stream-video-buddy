@@ -1,6 +1,6 @@
 {
   "name": "stream-video-buddy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Client to test StreamVideoSDK",
   "main": "./lib/index.js",
   "dependencies": {
@@ -13,9 +13,8 @@
     "stream-video-buddy": "./lib/index.js"
   },
   "scripts": {
-    "eslint": "eslint --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
-    "test": "jest --collectCoverage --detectOpenHandles",
-    "prettier": "prettier --check '**/*.{js,ts}'"
+    "lint": "eslint --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
+    "test": "jest --collectCoverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",

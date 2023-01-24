@@ -33,4 +33,13 @@ describe('stream video buddy', () => {
       usersCount: 5,
     }).init();
   });
+
+  it('verifies static mode', async () => {
+    await new VideoBuddyClient({
+      callId: randomCallId,
+      duration: 1,
+      frozen: true,
+      silent: true,
+    }).init();
+  });
 });
