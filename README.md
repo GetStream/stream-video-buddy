@@ -23,7 +23,7 @@ npm install -g https://github.com/GetStream/stream-video-buddy
 1. Directly:
 
     ```bash
-    stream-video-buddy join --call-id test321 --users-count 5
+    stream-video-buddy join --call-id test321 --users-count 2 --mic --camera
     ```
 
 2. Remotely:
