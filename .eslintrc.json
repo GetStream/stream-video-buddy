@@ -1,0 +1,128 @@
+{
+  "root": true,
+  "plugins": [
+    "jest-dom",
+    "jest",
+    "prettier",
+    "import",
+    "sort-destructure-keys"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:jest/all",
+    "plugin:jest-dom/recommended"
+  ],
+  "rules": {
+    "array-callback-return": 2,
+    "arrow-body-style": 2,
+    "comma-dangle": 0,
+    "default-case": 2,
+    "eqeqeq": [
+      2,
+      "smart"
+    ],
+    "jest/expect-expect": 0,
+    "jest/no-conditional-expect": 0,
+    "jest/no-disabled-tests": 0,
+    "jsx-quotes": [
+      "error",
+      "prefer-single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "no-console": 0,
+    "no-mixed-spaces-and-tabs": 1,
+    "no-self-compare": 2,
+    "no-underscore-dangle": [
+      2,
+      {
+        "allowAfterThis": true
+      }
+    ],
+    "no-unused-vars": [
+      1,
+      {
+        "ignoreRestSiblings": true
+      }
+    ],
+    "no-use-before-define": 0,
+    "no-useless-concat": 2,
+    "no-var": 2,
+    "object-shorthand": 1,
+    "prefer-const": 1,
+    "require-await": 2,
+    "semi": [
+      1,
+      "always"
+    ],
+    "space-before-function-paren": 0,
+    "sort-destructure-keys/sort-destructure-keys": [
+      2,
+      {
+        "caseSensitive": false
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "allowSeparatedGroups": true,
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": [
+          "none",
+          "all",
+          "multiple",
+          "single"
+        ]
+      }
+    ],
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "caseSensitive": false,
+        "minKeys": 2,
+        "natural": false
+      }
+    ],
+    "valid-typeof": 2,
+    "import/prefer-default-export": 0,
+    "import/extensions": [
+      0
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "max-classes-per-file": 0,
+    "camelcase": 0,
+    "jest/prefer-inline-snapshots": 0,
+    "jest/lowercase-name": 0,
+    "jest/prefer-expect-assertions": 0,
+    "jest/no-hooks": 0,
+    "jest/require-hook": 0,
+    "no-unused-expressions": "off",
+    "jest/no-if": "off"
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "allowImportExportEverywhere": true,
+    "sourceType": "module",
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  }
+}

@@ -1,0 +1,46 @@
+name: Code Review
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    types: [opened, synchronize]
+
+  workflow_dispatch:
+
+jobs:
+  chat:
+    name: Automated Code Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR_NUMBER: ${{ github.event.number }}
+      STREAM_SDK_TEST_ACCOUNT_OTP_SECRET: ${{ secrets.STREAM_SDK_TEST_ACCOUNT_OTP_SECRET }}
+      STREAM_SDK_TEST_ACCOUNT_PASSWORD: ${{ secrets.STREAM_SDK_TEST_ACCOUNT_PASSWORD }}
+      STREAM_SDK_TEST_ACCOUNT_EMAIL: ${{ secrets.STREAM_SDK_TEST_ACCOUNT_EMAIL }}
+      STREAM_SDK_TEST_APP: ${{ secrets.STREAM_SDK_TEST_APP }}
+    steps:
+      - uses: actions/checkout@v3.3.0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19.4.0
+          cache: 'npm'
+
+      - name: Install GUI # required to test the `--show-window` option
+        run: sudo apt-get install -y xvfb x11-apps x11-xkb-utils libx11-6 libx11-xcb1
+
+      - run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Authorization
+        run: npm run auth
+
+      - name: Test
+        run: xvfb-run npm run test

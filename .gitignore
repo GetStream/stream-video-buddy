@@ -1,0 +1,8 @@
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.DS_Store
+/coverage/
+video-buddy-session.json
+report.xml

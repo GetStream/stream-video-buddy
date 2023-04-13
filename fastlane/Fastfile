@@ -1,0 +1,28 @@
+skip_docs
+
+lane :release do
+  version = JSON.parse(File.read('../package.json'))['version']
+  set_github_release(
+    repository_name: 'GetStream/stream-video-buddy',
+    api_token: ENV.fetch("GITHUB_TOKEN", nil),
+    name: "Stream Video Buddy v#{version}",
+    description: "v#{version}",
+    commitish: git_branch
+  )
+end
+
+lane :update_version do |options|
+  Dir.chdir('..') do
+    package_path = 'package.json'
+    package_content = JSON.parse(File.read(package_path))
+    previous_version = package_content['version']
+    package_content['version'] = options[:v]
+    File.write(package_path, JSON.pretty_generate(package_content))
+
+    ['lib/index.js', 'README.md'].each do |file_path|
+      text = File.read(file_path)
+      new_text = text.gsub(/#{previous_version}/, options[:v])
+      File.open(file_path, 'w') { |f| f.puts(new_text) }
+    end
+  end
+end
