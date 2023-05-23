@@ -7,6 +7,7 @@ lane :release do
     api_token: ENV.fetch("GITHUB_TOKEN", nil),
     name: "Stream Video Buddy v#{version}",
     description: "v#{version}",
+    tag_name: version,
     commitish: git_branch
   )
 end

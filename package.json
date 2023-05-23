@@ -1,6 +1,6 @@
 {
   "name": "stream-video-buddy",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "Client to test StreamVideoSDK",
   "main": "./lib/index.js",
   "dependencies": {
