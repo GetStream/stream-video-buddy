@@ -105,7 +105,7 @@ To release a new version of *stream-video-buddy*:
 
 ```bash
 bundle install
-bundle exec fastlane release
+bundle exec fastlane release version:"${VERSION_NUMBER}"
 ```
 
 ### Internal docs
