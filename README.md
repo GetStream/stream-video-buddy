@@ -86,7 +86,6 @@ The table below lists all options you can include on the `stream-video-buddy` co
 | | `-m, --message <string>` | What message should participant send? | |
 | | `--message-count <number>` | How many messages should participant send? | `1` |
 | | `--camera` | Should participant turn on the camera? | `false` |
-| | `--frozen` | Should participant be frozen when the camera is on? | `false` |
 | | `--mic` | Should participant turn on the microphone? | `false` |
 | | `--silent` | Should participant be silent when the mic is on? | `false` |
 | | `--screen-share` | Should participant share the screen? | `false` |

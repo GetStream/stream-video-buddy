@@ -31,17 +31,6 @@ describe('stream video buddy', () => {
     }).init();
   });
 
-  it('verifies static mode', async () => {
-    await new VideoBuddyClient({
-      callId: randomCallId,
-      duration: 1,
-      frozen: true,
-      silent: true,
-      storageStatePath,
-      userCount: 1,
-    }).init();
-  });
-
   it('verifies that participant can share the screen', async () => {
     await new VideoBuddyClient({
       callId: randomCallId,
