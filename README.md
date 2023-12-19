@@ -7,7 +7,7 @@ Even though the tool's primary purpose is automated testing, it can be pretty he
 ## Installation
 
 ```bash
-npm install -g "https://github.com/GetStream/stream-video-buddy#1.6.15"
+npm install -g "https://github.com/GetStream/stream-video-buddy#1.6.16"
 ```
 
 ## Requirements
