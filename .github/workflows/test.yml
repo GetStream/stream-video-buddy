@@ -39,8 +39,5 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Authorization
-        run: npm run auth
-
       - name: Test
         run: xvfb-run npm run test
