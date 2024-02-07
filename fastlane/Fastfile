@@ -3,7 +3,6 @@ skip_docs
 lane :release do |options|
   version_number = options[:version]
   update_version(version: version_number)
-  sh('npm i')
 
   set_github_release(
     repository_name: 'GetStream/stream-video-buddy',
@@ -30,6 +29,8 @@ private_lane :update_version do |options|
       new_text = text.gsub(/#{previous_version}/, version_number)
       File.open(file_path, 'w') { |f| f.puts(new_text) }
     end
+
+    sh('npm i')
   end
 
   sh('git add -A')
