@@ -13,36 +13,8 @@ npm install -g "https://github.com/GetStream/stream-video-buddy#1.6.19"
 ## Requirements
 
 ```bash
-export STREAM_SDK_TEST_APP="..."
-export STREAM_SDK_TEST_ACCOUNT_EMAIL="..."
-export STREAM_SDK_TEST_ACCOUNT_PASSWORD="..."
-export STREAM_SDK_TEST_ACCOUNT_OTP_SECRET="..."
+export STREAM_SDK_TEST_APP="https://getstream.io/video/demos"
 ```
-
-## Authorization
-
-First of all, *stream-video-buddy* needs to be authorized in Dogfooding app:
-
-```bash
-$ stream-video-buddy auth
-⏳ Going through Google OAuth
-✅ Google OAuth has passed
-```
-
-As soon as authorization passes, *stream-video-buddy* is ready to use.
-In case you constantly see something like this…
-
-```bash
-❌ Google OAuth has declined OTP. Trying again...
-❌ Google OAuth has declined OTP. Trying again...
-❌ Google OAuth has declined OTP. Trying again...
-```
-
-…ensure you exported [all required credentials](#requirements).
-
-## ⚠️ Warning
-
-By default, *stream-video-buddy* uses a test Stream account to join video calls. To speed things up, it saves cookies after the very first authorization to bypass the OAuth flow on the subsequent ones. Make sure you add `video-buddy-session.json` to your `.gitignore` file.
 
 ## Usage
 
@@ -51,7 +23,6 @@ By default, *stream-video-buddy* uses a test Stream account to join video calls.
 1. From the command line:
 
     ```bash
-    stream-video-buddy auth
     stream-video-buddy join --call-id test123 --user-count 2 --duration 10
     ```
 

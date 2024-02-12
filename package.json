@@ -15,8 +15,7 @@
   "scripts": {
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
     "lint:fix": "eslint --fix --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
-    "test": "jest --collectCoverage --detectOpenHandles",
-    "auth": "node lib/index.js auth"
+    "test": "jest --collectCoverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",
