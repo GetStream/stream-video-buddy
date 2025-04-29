@@ -1,32 +1,38 @@
 skip_docs
 
 lane :release do |options|
-  version_number = options[:version]
-  update_version(version: version_number)
+  version = update_version(version: options[:version])
 
   set_github_release(
     repository_name: 'GetStream/stream-video-buddy',
     api_token: ENV.fetch('GITHUB_TOKEN', nil),
-    name: "Stream Video Buddy v#{version_number}",
-    description: "v#{version_number}",
-    tag_name: version_number,
+    name: "Stream Video Buddy v#{version}",
+    description: "v#{version}",
+    tag_name: version,
     commitish: git_branch
   )
 end
 
 private_lane :update_version do |options|
-  version_number = options[:version]
+  version = options[:version]
 
   Dir.chdir('..') do
     package_path = 'package.json'
     package_content = JSON.parse(File.read(package_path))
     previous_version = package_content['version']
-    package_content['version'] = version_number
+
+    unless version
+      major, minor, patch = previous_version.split('.').map(&:to_i)
+      patch += 1
+      version = "#{major}.#{minor}.#{patch}"
+    end
+
+    package_content['version'] = version
     File.write(package_path, JSON.pretty_generate(package_content))
 
     ['lib/index.js', 'README.md'].each do |file_path|
       text = File.read(file_path)
-      new_text = text.gsub(/#{previous_version}/, version_number)
+      new_text = text.gsub(/#{previous_version}/, version)
       File.open(file_path, 'w') { |f| f.puts(new_text) }
     end
 
@@ -36,8 +42,9 @@ private_lane :update_version do |options|
   sh('git add -A')
   UI.user_error!('Not committing changes') unless prompt(text: 'Will commit changes. All looking good?', boolean: true)
 
-  sh("git commit -m 'Bump #{version_number}'")
+  sh("git commit -m 'Bump #{version}'")
   UI.user_error!('Not pushing changes') unless prompt(text: 'Will push changes. All looking good?', boolean: true)
 
   push_to_git_remote(tags: false)
+  version
 end
