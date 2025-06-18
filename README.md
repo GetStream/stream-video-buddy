@@ -24,6 +24,7 @@ export STREAM_SDK_TEST_APP="https://getstream.io/video/demos"
 
     ```bash
     stream-video-buddy join --call-id test123 --user-count 2 --duration 10
+    stream-video-buddy ring --user-id martin --duration 10
     ```
 
 2. Through the local web server:
@@ -34,37 +35,23 @@ export STREAM_SDK_TEST_APP="https://getstream.io/video/demos"
         stream-video-buddy server --port 4567
         ```
 
-    2. Execute `stream-video-buddy join` command via the POST request, e.g.:
+    2. Execute `stream-video-buddy join` or `stream-video-buddy ring` command via the POST request, e.g.:
 
         ```bash
-        curl "http://localhost:4567/stream-video-buddy?async=true" \
+        curl "http://localhost:4567/join?async=true" \
           -X POST \
           -H "Content-Type: application/json" \
           -d '{"call-id": "test123", "user-count": 2, "duration": 10}'
+
+        curl "http://localhost:4567/ring?async=true" \
+          -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"user-id": "martin", "duration": 10}'
         ```
 
 ### Options reference
 
-The table below lists all options you can include on the `stream-video-buddy` command line.
-
-| Category | Option | Description | Default |
-| --- | --- | --- | --- |
-| **General** | `-h, --help` | Display help documentation | |
-| | `-V, --version` | Display version information | |
-| **Events** | `-i, --call-id <string>` | Which call should participant join? | |
-| | `-d, --duration <seconds>` | How long should participant stay on the call? | `∞` |
-| | `-c, --user-count <number>` | How many participants should join the call? | `1` |
-| | `-m, --message <string>` | What message should participant send? | |
-| | `--message-count <number>` | How many messages should participant send? | `1` |
-| | `--camera` | Should participant turn on the camera? | `false` |
-| | `--mic` | Should participant turn on the microphone? | `false` |
-| | `--silent` | Should participant be silent when the mic is on? | `false` |
-| | `--screen-share` | Should participant share the screen? | `false` |
-| | `--screen-sharing-duration <seconds>` | How long should participant share the screen? | `∞` |
-| | `--record` | Should participant record the call? | `false` |
-| | `--recording-duration <seconds>` | How long should participant record the call? | `∞` |
-| **Debugging** | `--show-window` | Should browser window be visible? | `false` |
-|  | `--record-session` | Should buddy record the session? | `false` |
+See [index.js](lib/index.js) for the full list of commands and their options.
 
 ## Release
 
