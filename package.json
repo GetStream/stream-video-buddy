@@ -1,6 +1,6 @@
 {
   "name": "stream-video-buddy",
-  "version": "1.6.27",
+  "version": "1.6.28",
   "description": "Client to test StreamVideoSDK",
   "main": "./lib/index.js",
   "dependencies": {
@@ -21,9 +21,7 @@
     "type": "git",
     "url": "https://github.com/GetStream/stream-video-buddy"
   },
-  "keywords": [
-
-  ],
+  "keywords": [],
   "author": "Stream.io Inc.",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
