@@ -55,16 +55,9 @@ See [index.js](lib/index.js) for the full list of commands and their options.
 
 ## Release
 
-To release a new version of *stream-video-buddy*:
-
-1. Update the package version in `package.json` file
-2. Run the following command:
+Run the following commands to release a new version of *stream-video-buddy*:
 
 ```bash
 bundle install
 bundle exec fastlane release version:"${VERSION_NUMBER}"
 ```
-
-### Internal docs
-
-- [Notion](https://notion.so/18adf69c5393493e8bab4e8798326155)
