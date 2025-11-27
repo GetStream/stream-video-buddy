@@ -10,11 +10,17 @@ Even though the tool's primary purpose is automated testing, it can be pretty he
 npm install -g "https://github.com/GetStream/stream-video-buddy#1.6.32"
 ```
 
-## Requirements
+## Configuration
 
-```bash
-export STREAM_SDK_TEST_APP="https://getstream.io/video/demos"
-```
+By default, the tool uses `https://getstream.io/video/demos` as the test app URL. You can override it in two ways:
+
+1. Setting the `STREAM_SDK_TEST_APP` environment variable:
+
+   ```bash
+   export STREAM_SDK_TEST_APP="https://your-custom-app.com"
+   ```
+
+2. Using the `--app` command-line argument (overrides the environment variable)
 
 ## Usage
 
