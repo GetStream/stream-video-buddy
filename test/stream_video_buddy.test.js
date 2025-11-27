@@ -3,7 +3,7 @@ const randomCallId = (Math.random() + 1).toString(36).substring(5);
 
 describe('stream video buddy', () => {
   it('verifies that one participant can join', async () => {
-    await new VideoBuddyClient({
+    await new VideoBuddyClient('join', {
       callId: randomCallId,
       duration: 1,
       userCount: 1,
@@ -11,7 +11,7 @@ describe('stream video buddy', () => {
   });
 
   it('verifies that multiple participants can join', async () => {
-    await new VideoBuddyClient({
+    await new VideoBuddyClient('join', {
       callId: randomCallId,
       duration: 1,
       userCount: 5,
@@ -19,7 +19,7 @@ describe('stream video buddy', () => {
   });
 
   it('verifies that multiple participants can join [headfull]', async () => {
-    await new VideoBuddyClient({
+    await new VideoBuddyClient('join', {
       callId: randomCallId,
       duration: 1,
       showWindow: true,
@@ -28,7 +28,7 @@ describe('stream video buddy', () => {
   });
 
   it('verifies that participant can share the screen', async () => {
-    await new VideoBuddyClient({
+    await new VideoBuddyClient('join', {
       callId: randomCallId,
       duration: 1,
       screenShare: true,
@@ -38,7 +38,7 @@ describe('stream video buddy', () => {
   });
 
   it('verifies that participant can record the call', async () => {
-    await new VideoBuddyClient({
+    await new VideoBuddyClient('join', {
       callId: randomCallId,
       duration: 1,
       record: true,
