@@ -31,9 +31,9 @@ jobs:
       - name: Install GUI # required to test the `--show-window` option
         run: sudo apt-get install -y xvfb x11-apps x11-xkb-utils libx11-6 libx11-xcb1
 
-      - run: npx playwright install
-
       - run: npm install
+
+      - run: npx playwright install chromium
 
       - name: Lint
         run: npm run lint
