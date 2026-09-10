@@ -61,9 +61,18 @@ See [index.js](lib/index.js) for the full list of commands and their options.
 
 ## Release
 
-Run the following commands to release a new version of *stream-video-buddy*:
+`main` only accepts changes through a pull request, so a release has two steps. Both need a `GITHUB_TOKEN` with write access to this repository.
+
+1. Bump the version and open the pull request:
 
 ```bash
 bundle install
-bundle exec fastlane release version:"${VERSION_NUMBER}"
+GITHUB_TOKEN="${GITHUB_TOKEN}" bundle exec fastlane release version:"${VERSION_NUMBER}"
+```
+
+2. Once that pull request is merged, create the tag and the GitHub release from `main`:
+
+```bash
+git checkout main && git pull
+GITHUB_TOKEN="${GITHUB_TOKEN}" bundle exec fastlane publish
 ```
