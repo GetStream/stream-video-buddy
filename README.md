@@ -55,6 +55,52 @@ By default, the tool uses `https://getstream.io/video/demos` as the test app URL
           -d '{"user-id": "martin", "duration": 10}'
         ```
 
+### `livestream-bench`
+
+Loads a livestream call with receive-only viewers that also chat, so a real client can be
+profiled under that load. Built for benchmarking the Flutter `chat_rooms_with_livestream`
+sample, but it works against any livestream call.
+
+```bash
+stream-video-buddy livestream-bench \
+  --api-key "${STREAM_API_KEY}" \
+  --api-secret "${STREAM_API_SECRET}" \
+  --call-id backstage-lounge-bench \
+  --channel-id backstage-lounge \
+  --user-count 50 \
+  --duration 300 \
+  --churn-interval 30
+```
+
+How it differs from `join`, and why:
+
+- **Bots do not publish, and do not decode.** `call.join()` sends no media unless the camera is
+  explicitly enabled, and on the `livestream` call type only the `host` role may publish. There
+  is no `<video>` element either: the SFU forwards a track because something is *subscribed* to
+  it, not because a sink is attached, so rendering would only burn CPU on the machine generating
+  the load. `--video-width` / `--video-height` pin which simulcast layer the server sends.
+- **Bots are sharded across chromium processes and BrowserContexts**
+  (`--pages-per-browser`, `--pages-per-context`). Chromium coalesces same-origin pages in one
+  context into a single renderer, and dozens of peer connections in one renderer is the
+  configuration behind most "it breaks past 50 participants" reports.
+- **One failure never ends the run.** Ramp-up is `Promise.allSettled` with per-bot retry and full
+  jitter, unlike `join`'s `Promise.all`.
+- **Identities are deterministic**: `<prefix>-<runId>-<n>`, so bots never collide and a run is
+  greppable in the dashboard afterwards.
+- **Chat bots run in Node**, not in the pages, so a crashed renderer cannot take the chat load
+  down with it. They need no `addMembers`, because Stream's `livestream` *channel* type is open
+  to the `user` role - which also sidesteps the 100-members-per-call API limit.
+- **`--churn-interval`** makes a fraction of viewers leave and rejoin on a timer. Steady-state
+  viewers produce one participant event each and then go quiet; churn is what actually exercises
+  a client's participant join/leave handling.
+
+Use `--emit-dart-defines bench_env.json` to write the API key, the pinned call id and a token per
+sample user, then start the Flutter app with
+`flutter run --profile --dart-define-from-file=bench_env.json`.
+
+Results land in `--out` (default `./bench-results.json`). The headline number is
+**how many viewers were still live at the end**, not how many joined. Ctrl-C still writes results.
+
 ### Options reference
 
 See [index.js](lib/index.js) for the full list of commands and their options.

@@ -12,3 +12,4 @@ dist
 *.md
 /coverage
 docusaurus/
+lib/bench/viewer/bundle.js
