@@ -15,7 +15,8 @@
   "scripts": {
     "lint": "eslint --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
     "lint:fix": "eslint --fix --format 'node_modules/eslint-friendly-formatter' '**/*.{js,ts}' --max-warnings 0",
-    "test": "jest --collectCoverage --detectOpenHandles"
+    "test": "jest --collectCoverage --detectOpenHandles",
+    "benchmark": "node benchmark/load-test.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
   },
   "homepage": "https://github.com/GetStream/stream-video-buddy",
   "devDependencies": {
+    "@stream-io/node-sdk": "^0.8.6",
+    "@stream-io/video-client": "^1.60.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard": "^17.0.0",
@@ -40,6 +43,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-sort-destructure-keys": "^1.4.0",
     "jest": "^29.3.1",
-    "prettier": "2.8.3"
+    "prettier": "2.8.3",
+    "stream-chat": "^9.53.0"
   }
 }

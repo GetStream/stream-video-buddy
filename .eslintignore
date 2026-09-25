@@ -12,3 +12,4 @@ dist
 *.md
 /coverage
 docusaurus/
+benchmark/vendor/

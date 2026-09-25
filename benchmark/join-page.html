@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>stream-video-buddy load harness</title>
+  </head>
+  <body>
+    <!--
+      Deliberately empty. The point of this page is to run the Stream WebRTC
+      stack with no application on top of it, so a measured join time is the
+      SDK's join time and not a React tree rendering.
+    -->
+    <script type="module">
+      import { StreamChat, StreamVideoClient } from './vendor/sdk.js';
+
+      const sessions = [];
+
+      // Chat is a separate client and a separate connection. Timed on its own so
+      // a slow message send never hides inside the join number.
+      async function sendChat({ apiKey, token, userId, guest, chat }) {
+        const marks = {};
+        const t0 = performance.now();
+        const chatClient = new StreamChat(apiKey);
+        if (guest) {
+          await chatClient.setGuestUser({ id: userId });
+        } else {
+          await chatClient.connectUser({ id: userId }, token);
+        }
+        marks.chatConnectMs = performance.now() - t0;
+
+        const channel = chatClient.channel(chat.channelType, chat.channelId);
+        await channel.watch();
+
+        // `{userID}` in the message text is replaced with the participant's id,
+        // so every sender is identifiable in the channel.
+        const text = chat.message.replace(/\{userid\}/gi, userId);
+
+        const tSend = performance.now();
+        for (let i = 0; i < chat.messageCount; i++) {
+          await channel.sendMessage({ text });
+        }
+        marks.chatSendMs = performance.now() - tSend;
+        return { chatClient, marks };
+      }
+
+      async function joinOne({ apiKey, token, userId, callType, callId, create, guest, chat }) {
+        const marks = { userId };
+        const t0 = performance.now();
+        try {
+          // Guest users carry no token at all, which is what a livestream
+          // viewer usually is. Authenticated users need one minted per user.
+          const client = guest
+            ? new StreamVideoClient({ apiKey, user: { id: userId, type: 'guest' } })
+            : new StreamVideoClient({ apiKey, token, user: { id: userId } });
+          marks.clientMs = performance.now() - t0;
+
+          const call = client.call(callType, callId);
+
+          // Viewers must not publish: an enabled device would make this a
+          // capture/encode benchmark instead of a join benchmark.
+          await call.camera.disable();
+          await call.microphone.disable();
+
+          const tJoin = performance.now();
+          await call.join({ create });
+          marks.joinMs = performance.now() - tJoin;
+
+          let chatClient;
+          if (chat) {
+            const sent = await sendChat({ apiKey, token, userId, guest, chat });
+            Object.assign(marks, sent.marks);
+            chatClient = sent.chatClient;
+          }
+
+          marks.totalMs = performance.now() - t0;
+          marks.ok = true;
+
+          sessions.push({ client, call, chatClient, userId });
+        } catch (error) {
+          marks.ok = false;
+          marks.totalMs = performance.now() - t0;
+          marks.error = String((error && error.message) || error);
+        }
+        return marks;
+      }
+
+      window.buddyHarness = {
+        // `rampMs` staggers starts inside a tab; 0 fires them all at once.
+        async join(config) {
+          const { participants, rampMs = 0, ...shared } = config;
+          const pending = participants.map(async (p, i) => {
+            if (rampMs) await new Promise((r) => setTimeout(r, i * rampMs));
+            return joinOne({ ...shared, ...p });
+          });
+          return Promise.all(pending);
+        },
+
+        participantCount() {
+          const call = sessions[0]?.call;
+          if (!call) return null;
+          return call.state.participantCount ?? call.state.participants?.length ?? null;
+        },
+
+        async leaveAll() {
+          const results = await Promise.allSettled(
+            sessions.map(async ({ client, call, chatClient }) => {
+              await call.leave();
+              await client.disconnectUser();
+              if (chatClient) await chatClient.disconnectUser();
+            }),
+          );
+          sessions.length = 0;
+          return results.filter((r) => r.status === 'rejected').length;
+        },
+      };
+
+      window.buddyHarnessReady = true;
+    </script>
+  </body>
+</html>
