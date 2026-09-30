@@ -45,7 +45,24 @@ The secret is read from the environment and never logged.
 | `--hold <seconds>` | Stay on the call after joining. |
 | `--create` | Create the call if missing. Guests usually may not do this. |
 | `--json <path>` | Write raw per-participant results. |
+| `--seed <string>` | Seed for user ids. Same seed gives the same ids; omit for a random one per run. |
 | `--show-window` | Run headed. |
+
+### Running on several machines
+
+User ids are derived from a seed, so two machines pointed at the same call do
+not fight over the same identities. Give each box its own seed:
+
+```bash
+# machine A
+node benchmark/load-test.js ... --seed machine-a
+# machine B
+node benchmark/load-test.js ... --seed machine-b
+```
+
+Reusing a seed reproduces the exact same ids, which is what you want when
+comparing two runs. Omitting it picks a random seed and prints it, so a run is
+never accidentally identical to someone else's.
 
 ### Chat
 

@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 const { execFileSync } = require('child_process');
+const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -57,17 +58,27 @@ async function run(options) {
 
   ensureVendorBundle();
 
+  // Without a seed every machine would mint the same `loadtest_0..N`, so two
+  // boxes pointed at one call would fight over the same identities. Hashing
+  // keeps ids to a safe charset whatever the seed looks like.
+  const seed = options.seed || crypto.randomBytes(4).toString('hex');
+  const runId = crypto.createHash('sha256').update(String(seed)).digest('hex').slice(0, 8);
+  const nameFor = (i) => `${options.userPrefix}${runId}_${i}`;
+  console.log(
+    options.seed
+      ? `- Seed "${seed}" -> ids ${nameFor(0)}..${nameFor(total - 1)}`
+      : `- Seed "${seed}" (random; pass --seed ${seed} to reproduce these ids)`,
+  );
+
   let participants;
   if (options.guest) {
-    participants = Array.from({ length: total }, (_, i) => ({
-      userId: `${options.userPrefix}${i}`,
-    }));
+    participants = Array.from({ length: total }, (_, i) => ({ userId: nameFor(i) }));
   } else {
     const mintToken = createTokenSource(options);
     console.log(`- Minting ${total} tokens...`);
     participants = await Promise.all(
       Array.from({ length: total }, async (_, i) => {
-        const userId = `${options.userPrefix}${i}`;
+        const userId = nameFor(i);
         return { token: await mintToken(userId), userId };
       }),
     );
@@ -214,6 +225,10 @@ program
   )
   .option('--token-url <url>', 'Endpoint returning {token} for ?user_id=<id>, instead of minting.')
   .option('--user-prefix <string>', 'User id prefix.', 'loadtest_')
+  .option(
+    '--seed <string>',
+    'Seed for user ids. Same seed gives the same ids; omit for a random one per run.',
+  )
   .option('--json <path>', 'Write raw per-participant results here.')
   .option('--show-window', 'Run headed.', false)
   .action((options) => {
