@@ -7,3 +7,4 @@ node_modules/
 video-buddy-session.json
 video-buddy-console.log
 report.xml
+.idea/
