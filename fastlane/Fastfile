@@ -1,7 +1,21 @@
 skip_docs
 
+# `main` only accepts changes through a pull request, so releasing is two steps:
+# `release` bumps the version on a branch and opens the pull request, and `publish`
+# creates the tag and the GitHub release from `main` once that pull request is merged.
 lane :release do |options|
   version = update_version(version: options[:version])
+
+  create_pull_request(
+    repo: 'GetStream/stream-video-buddy',
+    api_token: ENV.fetch('GITHUB_TOKEN', nil),
+    title: "Bump #{version}",
+    base: 'main'
+  )
+end
+
+lane :publish do
+  version = Dir.chdir('..') { JSON.parse(File.read('package.json'))['version'] }
 
   set_github_release(
     repository_name: 'GetStream/stream-video-buddy',
@@ -9,7 +23,7 @@ lane :release do |options|
     name: "Stream Video Buddy v#{version}",
     description: "v#{version}",
     tag_name: version,
-    commitish: git_branch
+    commitish: 'main'
   )
 end
 
@@ -37,14 +51,18 @@ private_lane :update_version do |options|
     end
 
     sh('npm i')
+
+    sh("git checkout -b bump/#{version}")
+    # Only the files the bump touches. `git add -A` used to pick up whatever else was
+    # lying around in the working tree, IDE folders included.
+    sh('git add package.json package-lock.json lib/index.js README.md')
   end
 
-  sh('git add -A')
   UI.user_error!('Not committing changes') unless prompt(text: 'Will commit changes. All looking good?', boolean: true)
 
   sh("git commit -m 'Bump #{version}'")
   UI.user_error!('Not pushing changes') unless prompt(text: 'Will push changes. All looking good?', boolean: true)
 
-  push_to_git_remote(tags: false)
+  push_to_git_remote(tags: false, set_upstream: true)
   version
 end
